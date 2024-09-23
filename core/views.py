@@ -108,9 +108,19 @@ def addHotel(request):
     else:
         form = HotelForm()
     rating = Reviewform()
+    
+    hotel_instance = None
+    avg_rating = 0
+
+    if 'hotel_id' in request.GET:
+        try:
+            hotel_instance = Hotel.objects.get(id=request.GET.get('hotel_id'))
+            avg_rating = hotel_instance.average_rating
+        except Hotel.DoesNotExist:
+            hotel_instance = None
     context = {
         'form': form,
-        'review':rating,
+        'rating':avg_rating,
         'action': 'Add',
         'name' : 'Add hotel',
     }
